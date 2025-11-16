@@ -68,13 +68,8 @@ This project is licensed under the MIT License.
 This is a testnet setup guide. Always follow official Gensyn documentation for mainnet deployments.
 
 
-
-
-Now, let me create the individual setup files:
-
 ### RL-Swarm Setup (`rl-swarm/setup.md`)
 
-```markdown
 # RL-Swarm Node Setup Guide
 
 This guide will help you set up the RL-Swarm GPU node for Gensyn testnet.
@@ -116,7 +111,7 @@ source .venv/bin/activate
 ### 5. Run RL-Swarm
 ```bash
 ./run_rl_swarm.sh
-
+```
 ### 6. Setup Ngrok for Access
 ```bash
 wget https://bin.equinox.io/c/bNyj1mQVY4c/ngrok-v3-stable-linux-amd64.tgz
