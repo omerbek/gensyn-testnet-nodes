@@ -41,18 +41,18 @@ sudo apt update && sudo apt upgrade -y
 sudo apt install python3 python3-pip python3-venv -y
 python3 -m venv gensyn-env
 source gensyn-env/bin/activate
-
+```
 **
 Node.js & Yarn**
 ```bash
 curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
 sudo apt install -y nodejs
 sudo npm install -g yarn
-
+```
 Git
 ```bash
 sudo apt install git -y
-
+```
 📊 Monitoring & Support
 
 Dashboard: https://dashboard.gensyn.ai/
@@ -91,27 +91,27 @@ This guide will help you set up the RL-Swarm GPU node for Gensyn testnet.
 ```bash
 sudo apt-get update && sudo apt-get upgrade -y
 sudo apt install screen curl iptables build-essential git wget lz4 jq make gcc nano automake autoconf tmux htop nvme-cli libgbm1 pkg-config libssl-dev libleveldb-dev tar clang bsdmainutils ncdu unzip -y
-
+```
 ### 2. Install Python & Node.js
 ```bash
 sudo apt install -y python3 python3-pip python3.10-venv
 curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
 sudo apt install -y nodejs
 sudo npm install -g yarn
-
+```
 ### 3. Clone and Setup RL-Swarm
 ```bash
 git clone https://github.com/gensyn-ai/rl-swarm.git
 cd rl-swarm
 git pull
-
+```
 
 ### 4. Create Virtual Environment
 ```bash
 screen -S swarm
 python3 -m venv .venv
 source .venv/bin/activate
-
+```
 
 ### 5. Run RL-Swarm
 ```bash
@@ -124,10 +124,10 @@ tar -xvzf ngrok-v3-stable-linux-amd64.tgz
 mv ngrok /usr/local/bin/
 ngrok config add-authtoken YOUR_AUTH_TOKEN
 ngrok http 3000
-
+```
 
 ### 7. Complete Setup ( copy temp folder. Then use this folder everytime swarm-code or block)
-```bash
+
 Access the forwarded ngrok URL in your browser
 Login with Google account
 Follow on-screen prompts in the swarm screen
@@ -141,7 +141,7 @@ swarm.pem - Your node identity file (BACKUP THIS FILE)
 screen -r swarm          # Reattach to swarm session
 CTRL + A then D          # Detach from screen session
 screen -ls               # List all screen sessions
-
+```
 
 ### Troubleshooting
 
