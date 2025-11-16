@@ -239,10 +239,11 @@ yarn dev
 ```
 
 Giriş yapmak için
-````
+```
 http://localhost:3000
 ```
  adresine erişin, ardından:
+
 ```
 cd ~/blockassist
 python3 -m venv blockassist-venv
