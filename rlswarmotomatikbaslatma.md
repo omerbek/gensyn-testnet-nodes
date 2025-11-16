@@ -9,7 +9,7 @@ Bu depo, **rl-swarm** projesini bir **gensyn screen** oturumu içinde çalışt�
 Sisteminizde **screen** ve **bash** yüklü olduğundan emin olun.  
 Depoyu klonlayın (veya dosyaları indirin) ve proje klasörüne geçin.
 
-`rl-swarm` projesini **gensyn** adlı bir screen oturumunda başlatmak için:
+`rl-swarm` projesini **gensyn** adlı bir screen oturumunda başlatmak için: **Eğer başka bir screen içinde çalışıyorsa Ctrl+C ile durdurun ve o screeni kapatın.**
 ```
 screen -S gensyn -dm bash -c 'printf "n\n\n" | bash run_rl_swarm.sh'
 ```
