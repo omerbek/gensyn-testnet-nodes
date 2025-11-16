@@ -1,5 +1,7 @@
+<img width="359" height="140" alt="image" src="https://github.com/user-attachments/assets/1c98070d-8a82-44ee-a286-ccc127ef0508" />
 
-**    # Gensyn Testnet Nodes Setup Guide**
+
+### Gensyn Testnet Nodes Setup Guide
 
 **This repository contains comprehensive setup guides for all three Gensyn testnet nodes:**
 
@@ -27,7 +29,7 @@ Choose your node and follow the dedicated setup guide:
 ### [RL-Swarm Setup](./readme.md)
 GPU-accelerated reinforcement learning node for the Gensyn network.
 
-### [BlockAssist Setup](./blockassistp.md)
+### [BlockAssist Setup](./blockassist.md)
 Minecraft AI assistant node running on WSL with GUI support.
 
 ### [CodeAssist Setup](./codeassist.md)
