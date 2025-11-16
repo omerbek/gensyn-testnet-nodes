@@ -1,18 +1,3 @@
-gensyn-testnet-nodes/
-├── README.md
-├── rl-swarm/
-│   ├── setup.md
-│   └── troubleshooting.md
-├── blockassist/
-│   ├── setup.md
-│   └── wsl-guide.md
-├── codeassist/
-│   ├── setup.md
-│   └── configuration.md
-└── images/
-    ├── rl-swarm/
-    ├── blockassist/
-    └── codeassist/
 
 **    # Gensyn Testnet Nodes Setup Guide**
 
@@ -39,13 +24,13 @@ gensyn-testnet-nodes/
 
 Choose your node and follow the dedicated setup guide:
 
-### [RL-Swarm Setup](./rl-swarm/setup.md)
+### [RL-Swarm Setup](./readme.md)
 GPU-accelerated reinforcement learning node for the Gensyn network.
 
-### [BlockAssist Setup](./blockassist/setup.md)
+### [BlockAssist Setup](./blockassistp.md)
 Minecraft AI assistant node running on WSL with GUI support.
 
-### [CodeAssist Setup](./codeassist/setup.md)
+### [CodeAssist Setup](./codeassist.md)
 Fully local AI coding agent using Docker and Ollama.
 
 ## 🔧 Common Tools Installation
