@@ -143,8 +143,10 @@ screen -ls               # List all screen sessions
 ### Troubleshooting
 
 Use CTRL + C to stop and restart with ./run_rl_swarm.sh
-Update regularly with git fetch origin && git reset --hard origin/main
-
+Update regularly with 
+```
+git fetch origin && git reset --hard origin/main
+```
 
 
 
