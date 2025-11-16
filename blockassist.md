@@ -70,7 +70,7 @@ pip install psutil readchar rich
 ```
 ### 6. Configure X11 Display
 
-# Install X11 tools
+### Install X11 tools
 ```
 sudo apt-get update -y
 sudo apt-get install -y x11-apps x11-xserver-utils
