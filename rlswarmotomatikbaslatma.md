@@ -28,42 +28,100 @@ nano monitor_gensyn.sh
 `monitor_gensyn.sh` dosyasına aşağıdaki içeriği yapıştırın:
 ```
 #!/bin/bash
-# === Gensyn Monitör Scripti ===
-# 'gensyn' screen oturumunu izler ve çıktı yoksa yeniden başlatır.
 
-LOG_TMP="/tmp/gensyn_last.log" # Screen çıktısının önceki anlık görüntüsünü tutar
-SCN="gensyn" # Projeyi çalıştıran screen oturumunun adı
+###############################################
+# Single Screen Auto-Monitoring Script
+# Universal prompt detection + auto restart
+# Works on all systems (GitHub safe)
+###############################################
 
-# Screen çıktısının ilk anlık görüntüsünü al
-screen -S "$SCN" -X hardcopy "$LOG_TMP"
+# === CONFIGURATION ===
+SCREEN_NAME="gen"     # takip edilecek screen adı
 
-echo "Gensyn monitörü başlatılıyor... Her 60 saniyede aktivite kontrol edilecek."
+# Evrensel shell prompt regex:
+# Virtualenv olabilir / olmayabilir
+# user@host:pwd şeklindeki tüm prompt'ları yakalar
+PROMPT_REGEX="^\(.*\)\? *[A-Za-z0-9._-]\+@[A-Za-z0-9._-]\+:.*[#$]$"
+
+# Log dosyaları
+OLD="/tmp/${SCREEN_NAME}_last.log"
+NEW="/tmp/${SCREEN_NAME}_new.log"
+
+# Değişmeme sayacı (2 olursa kesin restart)
+NOCHANGE=0
+
+echo "Taking initial snapshot for screen '$SCREEN_NAME'..."
+screen -S "$SCREEN_NAME" -X hardcopy "$OLD"
+
+echo "Initial snapshot saved. Waiting 180 seconds before starting monitor..."
+sleep 180
+
+
+###############################################
+# MAIN MONITORING LOOP
+###############################################
 
 while true; do
-sleep 60 # 60 saniye bekle
 
-# Screen çıktısının yeni anlık görüntüsünü al
-NEW_TMP="/tmp/gensyn_new.log"
-screen -S "$SCN" -X hardcopy "$NEW_TMP"
+    # Yeni log al
+    screen -S "$SCREEN_NAME" -X hardcopy "$NEW"
 
-# Önceki anlık görüntü ile yeni görüntüyü karşılaştır
-if cmp -s "$LOG_TMP" "$NEW_TMP"; then
-# Değişiklik yoksa, proje takıldı. Yeniden başlat.
-echo "Son bir dakikada çıktı tespit edilmedi. Proje yeniden başlatılıyor..."
-screen -S "$SCN" -X stuff $'\003' # Ctrl+C göndererek mevcut süreci durdur
-sleep 1
-screen -S "$SCN" -X stuff $'\e[A' # Önceki komutu çağırmak için Up Arrow
-sleep 1
-screen -S "$SCN" -X stuff $'\n' # Enter ile tekrar çalıştır
-sleep 1
-else
-# Çıktı değiştiyse, proje normal çalışıyor
-echo "Aktivite tespit edildi. Proje normal çalışıyor."
-fi
+    ###############################################
+    # 1) Prompt Görüldüyse — Kod Durmuştur → Restart
+    ###############################################
+    if grep -qE "$PROMPT_REGEX" "$NEW" 2>/dev/null; then
+        echo "Prompt detected — restarting '$SCREEN_NAME' immediately!"
+        
+        screen -S "$SCREEN_NAME" -X stuff $'\003'   # Ctrl+C
+        sleep 1
+        screen -S "$SCREEN_NAME" -X stuff $'\e[A'   # Up Arrow
+        sleep 1
+        screen -S "$SCREEN_NAME" -X stuff $'\n'     # Enter
+        sleep 1
 
-# Son anlık görüntü dosyasını bir sonraki kontrol için güncelle
-mv "$NEW_TMP" "$LOG_TMP"
+        mv "$NEW" "$OLD"
+        NOCHANGE=0
+        continue
+    fi
+
+
+    ###############################################
+    # 2) Log Hiç Değişmemişse
+    ###############################################
+    if cmp -s "$OLD" "$NEW"; then
+        NOCHANGE=$((NOCHANGE + 1))
+        echo "No change detected ($NOCHANGE cycle)."
+
+        # 2 döngü üst üste durduysa → GPU aktif olsa bile restart
+        if [ "$NOCHANGE" -ge 2 ]; then
+            echo "Screen '$SCREEN_NAME' is stalled for 2 cycles — forcing restart!"
+            
+            screen -S "$SCREEN_NAME" -X stuff $'\003'
+            sleep 1
+            screen -S "$SCREEN_NAME" -X stuff $'\e[A'
+            sleep 1
+            screen -S "$SCREEN_NAME" -X stuff $'\n'
+            sleep 1
+
+            NOCHANGE=0
+        else
+            # Sadece bilgi amaçlı GPU python process sayısı
+            PYTHON_COUNT=$(nvidia-smi --query-compute-apps=pid,process_name --format=csv,noheader | grep -c python)
+            echo "First stall detected. Python GPU processes running: $PYTHON_COUNT"
+        fi
+    else
+        echo "Activity detected — '$SCREEN_NAME' is running."
+        NOCHANGE=0
+    fi
+
+
+    # log’u güncelle
+    mv "$NEW" "$OLD"
+
+    # 120 saniye sonra yeniden kontrol
+    sleep 120
 done
+
 ```
 
 **Nano’da kaydedip çıkın (Ctrl+O, Enter, Ctrl+X).**
